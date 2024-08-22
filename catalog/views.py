@@ -6,6 +6,6 @@ from .models import Movie
 
 class MovieListView(ListView):
     model = Movie
-    context_object_name = 'movie'
+    context_object_name = 'movies'
     template_name = 'catalog/movie/list.html'
 
