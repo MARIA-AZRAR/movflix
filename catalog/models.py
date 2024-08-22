@@ -69,8 +69,9 @@ class Movie(models.Model):
         format the movie duration
         :return string:
         """
-        hours = self.duration // 60
-        minutes = self.duration % 60
+        total_minutes = int(self.duration.total_seconds() // 60)  # convert timedelta to total minutes, ensuring it's an integer
+        hours = total_minutes // 60
+        minutes = total_minutes % 60
         return f"{hours} hr {minutes} min" if hours else f"{minutes} min"
 
     @property
