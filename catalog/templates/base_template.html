@@ -19,8 +19,10 @@
           </div>
     
           <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="#" class="nav-link px-2 link-secondary">Home</a></li>
-            <li><a href="#" class="nav-link px-2">Features</a></li>
+            <li><a href="{% url 'catalog:movies' %}" class="nav-link px-2 link-secondary">Home</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="#" class="nav-link px-2 link-secondary">Wishlist</a></li>
+            {% endif %}
           </ul>
     
           <div class="col-md-3 text-end">

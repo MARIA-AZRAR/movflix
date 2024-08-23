@@ -20,7 +20,12 @@
             <p><strong>Average User Rating:</strong> {{ movie.average_rating|floatformat:1 }}/5</p>
             <p><strong>Language:</strong> {{ movie.language.title }}</p>
             <p><strong>Country:</strong> {{ movie.country.name }}</p>
-            <p><strong>Genres:</strong> {% for genre in movie.genres.all %}{{ genre.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+            <p><strong>Genres:</strong>
+                 {% for genre in movie.genres.all %}
+                    <a href="{% url 'catalog:movie_list_by_genre' genre.slug %}" class="text-decoration-none">{{ genre.name }}</a>
+                    {% if not forloop.last %}, {% endif %}
+                 {% endfor %}
+                </p>
             <p><strong>Director:</strong> {{ movie.director.name }}</p>
             <p><strong>Actors:</strong> {% for actor in movie.actors.all %}{{ actor.name }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
             <p><strong>Plot:</strong></p>

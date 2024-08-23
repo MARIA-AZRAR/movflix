@@ -5,7 +5,11 @@
 
 {% block content %}
 <div class="container container-mov mt-4">
-    <h1 class="mb-4">Movies</h1>
+    {% if genre %}
+    <h3 class="mb-4">Movies with genre {{genre.name}}</h3>
+    {% else %}
+        <h1 class="mb-4">Movies</h1>
+    {% endif %}
     <div class="row">
         {% for movie in movies %}
         <div class="col-md-3 mb-3">
