@@ -11,6 +11,7 @@ class MovieListView(ListView):
     model = Movie
     context_object_name = 'movies'
     template_name = 'catalog/movie/list.html'
+    paginate_by = 8
     
     # override queryset to pass the movies with the slug only
     def get_queryset(self):

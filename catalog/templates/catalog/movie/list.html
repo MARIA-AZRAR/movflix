@@ -1,4 +1,4 @@
-{% extends "base_template.html" %}
+{% extends "catalog/base_template.html" %}
 
 {% load static %}
 {% block title %}Movie List{% endblock %}
@@ -31,5 +31,6 @@
         <p>No movies available.</p>
         {% endfor %}
     </div>
+    {% include "pagination.html" with page=page_obj %}
 </div>
 {% endblock %}
