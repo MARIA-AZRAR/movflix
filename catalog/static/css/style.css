@@ -23,3 +23,9 @@
     padding-left: 150px !important; 
     padding-right: 150px !important;
 }
+
+.small-poster {
+    max-width: 40% !important;
+    height: auto;
+    object-fit: cover;
+}

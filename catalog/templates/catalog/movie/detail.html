@@ -31,6 +31,19 @@
             <p><strong>Plot:</strong></p>
             <p>{{ movie.plot }}</p>
         </div>
+
+    </div>
+
+    <!-- Similar Movies -->
+    <div class="row pt-4 pb-4">
+        <h2>Similar Movies</h2>
+        <div class="d-flex">
+            {% for similar_movie in similar_movies_list %}
+            <a href="{{ similar_movie.get_absolute_url }}" class="d-block me-2 mb-2">
+                <img src="{{ similar_movie.poster }}" class="rounded" id="small-poster" alt="{{ similar_movie.title }} Poster">
+            </a>
+            {% endfor %}
+        </div>
     </div>
     
     <!-- Reviews Section -->

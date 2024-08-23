@@ -1,5 +1,5 @@
 from typing import Any
-from django.db.models.query import QuerySet
+from django.db.models import Count
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, DetailView
 from taggit.models import Tag
@@ -48,3 +48,17 @@ class MovieDetailView(DetailView):
             release_date__month=self.kwargs['month'],
             release_date__day=self.kwargs['day'],
         )
+    
+    # override the context data to pass similar movies
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)   # run the parent method to get the movie object
+        # get movies which have most tags in common
+        context['similar_movies_list'] = None
+        movie = self.get_object()
+        genres_id_list = movie.genres.values_list('id', flat=True)
+        similar_movies_list = Movie.objects.filter(genres__in = genres_id_list).exclude(id=movie.id)
+        similar_movies_list = similar_movies_list.annotate(similar_movies=Count('genres')).order_by('-similar_movies', 'release_date')[:4]
+        
+        context['similar_movies_list'] = similar_movies_list
+        
+        return context
