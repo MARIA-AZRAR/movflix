@@ -1,6 +1,5 @@
 from django.urls import path
 from .views import MovieListView, MovieDetailView, review_post
-
 app_name = 'catalog'
 
 urlpatterns = [

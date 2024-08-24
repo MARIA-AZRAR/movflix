@@ -25,9 +25,16 @@
             {% endif %}
           </ul>
     
-          <div class="col-md-3 text-end">
-            <button type="button" class="btn btn-outline-primary me-2">Login</button>
-            <button type="button" class="btn btn-primary">Sign-up</button>
+            <div class="col-md-3 text-end">
+              {% if user.is_authenticated %}
+                  <div class="d-flex align-items-center justify-content-end">
+                      <h6 class="navbar-text me-2 mb-0">Welcome {{user.username}}</h6>
+                      <a href="{% url 'logout' %}" class="nav-link btn btn-outline-danger py-1 px-3">Logout</a>
+                  </div>
+            {% else %}
+              <a href="{% url 'login' %}" class="btn btn-outline-primary me-2">Login</a>
+              <a class="btn btn-primary">Sign-up</a>
+            {% endif %}
           </div>
         </header>
       </div>
