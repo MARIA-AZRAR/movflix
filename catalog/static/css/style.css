@@ -12,6 +12,11 @@
     height: 200px; /* Fixed height to match the image height */
     overflow: hidden; /* Hide overflow if the image is larger */
 }
+#small-poster {
+    max-width: 85% !important;
+    height: auto;
+    object-fit: cover;
+}
 
 .movie-poster {
     width: 90%; /* Ensure the image fits the width of the container */
@@ -24,8 +29,3 @@
     padding-right: 150px !important;
 }
 
-.small-poster {
-    max-width: 40% !important;
-    height: auto;
-    object-fit: cover;
-}

@@ -1,9 +1,10 @@
-from typing import Any
 from django.db.models import Count
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, render, redirect
+from django.views.decorators.http import require_POST
 from django.views.generic import ListView, DetailView
 from taggit.models import Tag
 from .models import Movie
+from .forms import ReviewForm
 
 # Create your views here.
 
@@ -60,5 +61,28 @@ class MovieDetailView(DetailView):
         similar_movies_list = similar_movies_list.annotate(similar_movies=Count('genres')).order_by('-similar_movies', 'release_date')[:4]
         
         context['similar_movies_list'] = similar_movies_list
+        context['form'] = ReviewForm()
         
         return context
+    
+
+@require_POST
+def review_post(request, movie_id):
+    movie = get_object_or_404(Movie, id=movie_id)
+    review = None
+    current_user = None
+    
+    if request.user.is_authenticated:
+        current_user = request.user
+        
+    form = ReviewForm(request.POST)
+
+    if form.is_valid():
+        review = form.save(commit=False)
+        review.movie = movie
+        review.author = current_user
+        review.save()
+
+        return redirect(movie.get_absolute_url())
+    
+    return render(request, 'catalog/movie/review.html', {'form': form, 'movie': movie, 'review': review})

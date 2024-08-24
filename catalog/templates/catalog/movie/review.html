@@ -1,0 +1,20 @@
+{% extends "catalog/base_template.html" %}
+{% block title %}Add a Review{% endblock %}
+{% block content %}
+    {% if review %}
+    <div class="container p-5">
+        <h2>Your review has been added.</h2>
+        <p><a href="{{ movie.get_absolute_url }}">Back to the movie</a></p>
+    </div>
+    {% else %}
+    <div class="container p-5">
+        {% if user.is_authenticated %}
+        <div class="row"> 
+            <div class="col-md-6">
+                {% include "catalog/movie/includes/review_form.html" %}
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+{% endblock %}
