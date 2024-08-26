@@ -2,6 +2,7 @@ from django.db.models import Count
 from django.shortcuts import get_object_or_404, render, redirect
 from django.views.decorators.http import require_POST
 from django.views.generic import ListView, DetailView
+from django.contrib.postgres.search import SearchQuery, SearchVector, SearchRank
 from taggit.models import Tag
 from .models import Movie
 from .forms import ReviewForm
@@ -22,6 +23,14 @@ class MovieListView(ListView):
         if genre_slug:
             genre = get_object_or_404(Tag, slug=genre_slug)
             queryset = queryset.filter(genres__in = [genre])
+        
+        print(self.request.GET)
+        query = None
+        query =  self.request.GET.get('query')
+        if query:
+            search_vector = SearchVector('title', 'plot', 'genres', 'language', 'country')
+            search_query = SearchQuery(query)
+            queryset = queryset.annotate(search=search_vector, rank=SearchRank(search_vector,search_query)).filter(search=search_query).order_by('-rank')
         
         return queryset
     

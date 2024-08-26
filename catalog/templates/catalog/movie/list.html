@@ -10,6 +10,13 @@
     {% else %}
         <h1 class="mb-4">Movies</h1>
     {% endif %}
+    <form method="GET" action="{% url 'catalog:movies' %}">
+        <div class="input-group mb-3">
+            <input type="text" name="query" class="form-control" placeholder="Search movies..." value="{{ request.GET.query }}">
+            <button class="btn btn-outline-secondary" type="submit">Search</button>
+        </div>
+    </form>
+    
     <div class="row">
         {% for movie in movies %}
         <div class="col-md-3 mb-3">
