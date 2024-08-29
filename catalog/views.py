@@ -7,11 +7,13 @@ from taggit.models import Tag
 
 from catalog.permissions import IsOwnerOrReadonlyPermission
 from rest_framework import permissions
-from catalog.serializers import LanguageSerializer, CountrySerializer, MovieSerializer, PersonSerializer, ReviewSerializer
+from catalog.serializers import LanguageSerializer, CountrySerializer, MovieSerializer, PersonSerializer, ReviewSerializer, TagSerializer
 from .models import Movie, Language, Country, Person, Review
 from .forms import ReviewForm
+from rest_framework.decorators import action
 
 from rest_framework import viewsets
+from rest_framework.response import Response
 
 # Create your views here.
 
@@ -117,13 +119,30 @@ class PersonViewSet(viewsets.ModelViewSet):
     queryset = Person.objects.all()
     serializer_class = PersonSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+class TagViewSet(viewsets.ModelViewSet):
+    queryset = Tag.objects.all()
+    serializer_class = TagSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     
 class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     
+    @action(detail=True, methods=['Get'], url_path='similar-movies')
+    def SimilarMovies(self, request, pk=None):
+         movie =  get_object_or_404(Movie, id=pk)
+         genres_id_list = movie.genres.values_list('id', flat=True)
+         similar_movies_list = Movie.objects.filter(genres__in = genres_id_list).exclude(id=movie.id)
+         similar_movies_list = similar_movies_list.annotate(similar_movies = Count('genres')).order_by('similar_movies', '-release_date')[:4]
+         serializer = self.get_serializer(similar_movies_list, many=True)
+         return Response(serializer.data)
+    
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadonlyPermission]
+    
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)

@@ -1,5 +1,5 @@
 from django.urls import include, path
-from .views import MovieListView, MovieDetailView, MovieViewSet, ReviewViewSet, review_post, LanguageViewSet, CountryViewSet, PersonViewSet
+from .views import MovieListView, MovieDetailView, MovieViewSet, ReviewViewSet, review_post, LanguageViewSet, CountryViewSet, PersonViewSet, TagViewSet
 from rest_framework.routers import DefaultRouter
 
 
@@ -11,6 +11,7 @@ router.register(r'countries', viewset=CountryViewSet, basename='country')
 router.register(r'persons', viewset=PersonViewSet, basename='person')
 router.register(r'movies', viewset=MovieViewSet, basename='movie')
 router.register(r'reviews', viewset=ReviewViewSet, basename='review')
+router.register(r'tags', viewset=TagViewSet, basename='tag')
  
 urlpatterns = [
     path('', include(router.urls)),

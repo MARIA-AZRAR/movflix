@@ -44,7 +44,7 @@ class Movie(models.Model):
     country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name='country_movies')
     actors = models.ManyToManyField(Person, related_name='acted_in', limit_choices_to={'role': Person.PersonRoles.ACTOR})
     director = models.ForeignKey(Person, related_name='directed', on_delete=models.CASCADE, limit_choices_to={'role': Person.PersonRoles.DIRECTOR})
-    
+
     genres = TaggableManager()
     
     created = models.DateTimeField(auto_now_add=True)

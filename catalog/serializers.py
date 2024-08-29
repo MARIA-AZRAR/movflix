@@ -29,7 +29,7 @@ class MovieSerializer(serializers.HyperlinkedModelSerializer):
         model = Movie
         fields = ['url', 'id', 'title', 'poster', 'release_date', 'slug', 'plot', 'imdb_rating', 
                   'duration' , 'movie_duration', 'average_rating', 'language', 'genres', 'director', 
-                  'actors', 'country', 'reviews', 'created', 'updated' ]
+                  'actors', 'country', 'reviews' ,'created', 'updated' ]
         
         
         
@@ -38,3 +38,9 @@ class ReviewSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Review
         fields = ['url', 'title', 'body', 'rating', 'author', 'movie', 'created', 'updated']
+        
+        
+class TagSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Tag
+        fields = '__all__'
