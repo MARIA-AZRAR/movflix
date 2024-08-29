@@ -4,8 +4,12 @@ from django.views.decorators.http import require_POST
 from django.views.generic import ListView, DetailView
 from django.contrib.postgres.search import SearchQuery, SearchVector, SearchRank
 from taggit.models import Tag
-from .models import Movie
+
+from catalog.serializers import LanguageSerializer, CountrySerializer, MovieSerializer, PersonSerializer, ReviewSerializer
+from .models import Movie, Language, Country, Person, Review
 from .forms import ReviewForm
+
+from rest_framework import viewsets
 
 # Create your views here.
 
@@ -28,7 +32,7 @@ class MovieListView(ListView):
         query = None
         query =  self.request.GET.get('query')
         if query:
-            search_vector = SearchVector('title', 'plot', 'genres', 'language', 'country')
+            search_vector = SearchVector('title', 'plot')
             search_query = SearchQuery(query)
             queryset = queryset.annotate(search=search_vector, rank=SearchRank(search_vector,search_query)).filter(search=search_query).order_by('-rank')
         
@@ -95,3 +99,24 @@ def review_post(request, movie_id):
         return redirect(movie.get_absolute_url())
     
     return render(request, 'catalog/movie/review.html', {'form': form, 'movie': movie, 'review': review})
+
+
+class LanguageViewSet(viewsets.ModelViewSet):
+    queryset = Language.objects.all()
+    serializer_class = LanguageSerializer
+    
+class CountryViewSet(viewsets.ModelViewSet):
+    queryset = Country.objects.all()
+    serializer_class = CountrySerializer
+    
+class PersonViewSet(viewsets.ModelViewSet):
+    queryset = Person.objects.all()
+    serializer_class = PersonSerializer
+    
+class MovieViewSet(viewsets.ModelViewSet):
+    queryset = Movie.objects.all()
+    serializer_class = MovieSerializer
+    
+class ReviewViewSet(viewsets.ModelViewSet):
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
