@@ -5,6 +5,8 @@ from django.views.generic import ListView, DetailView
 from django.contrib.postgres.search import SearchQuery, SearchVector, SearchRank
 from taggit.models import Tag
 
+from catalog.permissions import IsOwnerOrReadonlyPermission
+from rest_framework import permissions
 from catalog.serializers import LanguageSerializer, CountrySerializer, MovieSerializer, PersonSerializer, ReviewSerializer
 from .models import Movie, Language, Country, Person, Review
 from .forms import ReviewForm
@@ -104,19 +106,24 @@ def review_post(request, movie_id):
 class LanguageViewSet(viewsets.ModelViewSet):
     queryset = Language.objects.all()
     serializer_class = LanguageSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     
 class CountryViewSet(viewsets.ModelViewSet):
     queryset = Country.objects.all()
     serializer_class = CountrySerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     
 class PersonViewSet(viewsets.ModelViewSet):
     queryset = Person.objects.all()
     serializer_class = PersonSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     
 class MovieViewSet(viewsets.ModelViewSet):
     queryset = Movie.objects.all()
     serializer_class = MovieSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     
 class ReviewViewSet(viewsets.ModelViewSet):
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadonlyPermission]
