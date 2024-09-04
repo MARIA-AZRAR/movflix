@@ -7,13 +7,16 @@ from taggit.models import Tag
 
 from catalog.permissions import IsOwnerOrReadonlyPermission
 from rest_framework import permissions
-from catalog.serializers import LanguageSerializer, CountrySerializer, MovieSerializer, PersonSerializer, ReviewSerializer, TagSerializer
+from catalog.serializers import LanguageSerializer, CountrySerializer, MovieSerializer, PersonSerializer, \
+ReviewSerializer, TagSerializer
+
 from .models import Movie, Language, Country, Person, Review
 from .forms import ReviewForm
 from rest_framework.decorators import action
 
 from rest_framework import viewsets
 from rest_framework.response import Response
+from rest_framework import generics
 
 # Create your views here.
 
@@ -115,7 +118,17 @@ class CountryViewSet(viewsets.ModelViewSet):
     serializer_class = CountrySerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     
-class PersonViewSet(viewsets.ModelViewSet):
+# class PersonViewSet(viewsets.ModelViewSet):
+#     queryset = Person.objects.all()
+#     serializer_class = PersonSerializer
+#     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+class PersonListView(generics.ListCreateAPIView):
+    queryset = Person.objects.all()
+    serializer_class = PersonSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+class PersonDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Person.objects.all()
     serializer_class = PersonSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
