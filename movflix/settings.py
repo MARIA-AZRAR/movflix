@@ -55,6 +55,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'movflix.middleware.simple_middleware',
+    'movflix.middleware.MyMiddleware',
+    'movflix.middleware.MyAsyncMiddleware'
 ]
 
 ROOT_URLCONF = 'movflix.urls'
