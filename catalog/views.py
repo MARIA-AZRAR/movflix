@@ -125,10 +125,10 @@ class CountryViewSet(viewsets.ModelViewSet):
 
 class PersonListView(generics.ListCreateAPIView):
     queryset = Person.objects.all()
-    # actors = Person.people.actors()
-    # directors = Person.people.directors()
-    # for actor in directors:
-    #     print(f'{actor.name} ({actor.role})')
+    actors = Person.people.actors1()
+    directors = Person.people.directors()
+    for actor in actors:
+        print(f'{actor.name} ({actor.role})')
     serializer_class = PersonSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 

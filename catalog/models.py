@@ -14,7 +14,19 @@ class PersonQuerySet(models.QuerySet):
     
     def directors(self):
         return self.filter(role=Person.PersonRoles.DIRECTOR)
+    
+    # directors.queryset_only = True
 
+class PersonManager(models.Manager):
+    def get_queryset(self):
+        return PersonQuerySet(self.model, using=self._db)
+    
+    def actors1(self):
+        return self.get_queryset().actors()
+    
+    # def directors(self):
+    #     return self.get_queryset().directors()
+        
 class Language(models.Model):
     title = models.CharField(max_length=100, null=False)
     
@@ -36,7 +48,9 @@ class Person(models.Model):
     role = models.CharField(max_length=10, choices=PersonRoles.choices)
     
     objects = models.Manager()
-    people = PersonQuerySet.as_manager()
+    # people = PersonQuerySet.as_manager()
+    # people = PersonManager()
+    people = PersonManager.from_queryset(PersonQuerySet)()
     
     def __str__(self):
         return self.name
