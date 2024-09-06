@@ -8,6 +8,13 @@ from taggit.managers import TaggableManager
 
 # Create your models here.
 
+class PersonQuerySet(models.QuerySet):
+    def actors(self):
+        return self.filter(role=Person.PersonRoles.ACTOR)
+    
+    def directors(self):
+        return self.filter(role=Person.PersonRoles.DIRECTOR)
+
 class Language(models.Model):
     title = models.CharField(max_length=100, null=False)
     
@@ -28,6 +35,9 @@ class Person(models.Model):
     name = models.CharField(max_length=150)
     role = models.CharField(max_length=10, choices=PersonRoles.choices)
     
+    objects = models.Manager()
+    people = PersonQuerySet.as_manager()
+    
     def __str__(self):
         return self.name
     
@@ -46,7 +56,6 @@ class Movie(models.Model):
     director = models.ForeignKey(Person, related_name='directed', on_delete=models.CASCADE, limit_choices_to={'role': Person.PersonRoles.DIRECTOR})
 
     genres = TaggableManager()
-    
     # making a dummy field for management command
     award = models.BooleanField(default=False)
     
@@ -106,4 +115,3 @@ class Review(models.Model):
         return f'Review by {self.author.username} on {self.movie}'
     
     
-     
