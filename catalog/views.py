@@ -18,6 +18,11 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework import generics
 
+
+
+from .forms import FeedbackForm
+from django.views.generic.base import TemplateView
+from django.views.generic.edit import FormView
 # Create your views here.
 
 class MovieListView(ListView):
@@ -125,10 +130,10 @@ class CountryViewSet(viewsets.ModelViewSet):
 
 class PersonListView(generics.ListCreateAPIView):
     queryset = Person.objects.all()
-    actors = Person.people.actors1()
-    directors = Person.people.directors()
-    for actor in actors:
-        print(f'{actor.name} ({actor.role})')
+    # actors = Person.people.actors1()
+    # directors = Person.people.directors()
+    # for actor in directors:
+    #     print(f'{actor.name} ({actor.role})')
     serializer_class = PersonSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
@@ -163,3 +168,17 @@ class ReviewViewSet(viewsets.ModelViewSet):
     
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
+
+class FeedbackFormView(FormView):
+    template_name = "catalog/movie/feedback.html"
+    form_class = FeedbackForm
+    success_url = "/success/"
+
+    def form_valid(self, form):
+        form.send_email()
+        return super().form_valid(form)
+
+
+class SuccessView(TemplateView):
+    template_name = "catalog/movie/success.html"
