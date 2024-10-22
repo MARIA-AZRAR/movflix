@@ -1,6 +1,5 @@
 from django.contrib import admin
 from .models import Movie, Review, Language, Country, Person
-# Register your models here.
 
 admin.site.register(Language)
 admin.site.register(Country)
